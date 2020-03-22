@@ -21,7 +21,11 @@ $(document).ready(function(){
 
     });
     socket.on('fillFilters', function(data) {
-        PopulateFilters(data)
+        PopulateFilters(data, socket)
+    });
+
+    socket.on('updateTable', function(data) {
+        createCharts(data['categories'], data['countries'], data['mes4countries'] );
     });
 
     $( "#login" ).submit(function( event ) {

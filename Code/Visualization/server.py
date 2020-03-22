@@ -10,6 +10,7 @@ import json
 from Visualization import DataAnalyzer
 from Visualization.DataAnalyzer import DataAnalyzer
 from pathlib import Path
+
 import os
 
 
@@ -26,6 +27,12 @@ class AppFlask:
         self.app, self.socketio = create_app()
         print("Creating socketio app in server.py")
         self.__fileLocation = 'Data\policies.csv'
+        p = Path(self.__fileLocation).resolve()
+        data, measures = DataAnalyzer.getMeasures(p)
+        self.__data = data
+        self.__categories = measures
+        data = []
+        measures = []
         @self.app.route('/init', methods=['POST'])
         def init_gui():
             """
@@ -82,8 +89,8 @@ class AppFlask:
             pageLoaded = True;
             p = Path(self.__fileLocation).resolve()
             data, measures = DataAnalyzer.getMeasures(p)
-            countries=[c.name for c in data if (c.continent=='Europe' and len(c.measures)>1)]
-            activeCountries=[c for c in data if (c.continent=='Europe' and len(c.measures)>1)]
+            countries=[c.name for c in data if len(c.measures)>1]
+            activeCountries=[c for c in data if len(c.measures)>1]
             allContinents = [c.continent for c in data]
             continents=[]
             for continent in allContinents:
@@ -110,15 +117,37 @@ class AppFlask:
             self.socketio.emit('update', new_data, namespace="/Index")
 
         # Route for handling the login page logic
-        @self.app.route('/update', methods=['GET', 'POST'])
-        def update():
-            error = None
-            if request.method == 'POST':
-                if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-                    error = 'Invalid Credentials. Please try again.'
-                else:
-                    return redirect(url_for('home'))
-            return render_template('dashboard/Index.html', error=error)
+        @self.socketio.on('update', namespace='/Index')
+        def update(data):
+
+            selectedContinents=data[1]
+            selectedCountries = data[3]
+            selectedMeasures = data[5]
+            measures=[m for m in self.__categories if m in selectedMeasures]
+            countries = [c.name for c in self.__data if (c.continent in selectedContinents and c.name in selectedCountries and len(c.measures) > 1)]
+            activeCountries = [c for c in self.__data if (c.continent in selectedContinents and c.name in selectedCountries and len(c.measures) > 1)]
+
+
+            allMes4c = []
+            measures.sort();
+            countries.sort();
+            print("menu changed",countries)
+            activeCountries.sort(key=lambda x: x.name)
+            for country in activeCountries:
+                print(len(country.measures))
+                mes4c = []
+                for measure in measures:
+                    if len([m for m in country.measures if m.name == measure]) > 0:
+                        mes4c.insert(len(mes4c), ([m for m in country.measures if m.name == measure][0].startDate,
+                                                  [m for m in country.measures if m.name == measure][0].description))
+                    else:
+                        mes4c.insert(len(mes4c), [('', '')])
+                allMes4c.insert(len(allMes4c), mes4c)
+            new_data = {"countries": countries, "mes4countries": allMes4c, "categories": measures}
+
+            #filter_data = {"measures": measures, "countries": countries, "continents": continents};
+            #self.socketio.emit('fillFilters', filter_data, namespace="/Index")
+            self.socketio.emit('updateTable', new_data, namespace="/Index")
 
 def create_app():
     app = Flask(__name__, template_folder='static/templates')

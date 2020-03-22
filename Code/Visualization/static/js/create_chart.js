@@ -63,7 +63,7 @@ Highcharts.chart('container2', {
         styledMode: true
     },
     title: {
-        text: 'Measures taken by European countries against COVID 19'
+        text: 'Measures taken by countries against COVID 19'
     },
     accessibility: {
         point: {
