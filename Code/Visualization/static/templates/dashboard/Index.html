@@ -43,13 +43,52 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+.filterH {
+font-size: 1.17em;
+font-weight: bold;
+}
+
+.filter {
+  height: 100%;
+  width: 10%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.graph {
+  height: 100%;
+  width: 90%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+.left {
+  left: 0;
+  background-color: #1113;
+}
+
+.right {
+  right: 0;
+
+}
+
+
+
 
 		</style>
 	</head>
 	<body>
 <script type="text/javascript" src="/static/dist/socket.io/1.3.5/socket.io.min.js"></script>
 <script type="text/javascript" src="/static/dist/jquery/jquery-1.4.2.min.js"></script>
+<script src="static/js/filtering.js"></script>
 <script src="static/js/general.js"></script>
+
 <link href="static/js/Highcharts-8.0.4/code/css/highcharts.css" rel="stylesheet">
 <script src="static/js/Highcharts-8.0.4/code/highcharts.js"></script>
 <script src="static/js/Highcharts-8.0.4/code/modules/series-label.js"></script>
@@ -62,15 +101,45 @@
 
 <script src="static/js/Highcharts-8.0.4/code/modules/xrange.js"></script>
 
+<div class="filter left">
+  <div class="centered">
 
+    <h2>Filter data</h2>
+
+	  <div id="Continents">
+		  <span class="filterH">Continent:</span>
+
+	  </div>
+	  <div id="Countries">
+		  <span class="filterH">Country:</span>
+	  </div>
+	  <div id="StartingDate">
+		  <span class="filterH">Starting Date:</span>
+	  </div>
+	  <div id="Measures">
+		  <span class="filterH">Measure taken:</span>
+	  </div>
+
+  </div>
+</div>
+
+<div class="graph right">
+  <div class="centered">
+
+
+<form id = "login" action="" method="post">
+</form>
 <figure class="highcharts-figure">
     <div id="container2"></div>
     <p class="highcharts-description">
        Visualization of when containment measures were introduced per country.
     </p>
 </figure>
-<form id = "login" action="" method="post">
-</form>
+
+
+  </div>
+</div>
+
 
 		<script type="text/javascript">
 

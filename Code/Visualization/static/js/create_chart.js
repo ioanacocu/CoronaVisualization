@@ -8,7 +8,11 @@ s = [];
     i = 0;
     cats=categories.length;
     j=0;
-    today=today=new Date();
+    today=new Date();
+    cDay=today.getDate()
+    cMonth=today.getMonth()
+    cYear=today.getFullYear()
+    todayUTC=Date.UTC(cYear,cMonth,cDay)
 for(i;i<len;i++){
     sData=[]
     j=0;
@@ -39,7 +43,7 @@ for(i;i<len;i++){
         if(yearDate>2019){
         sData.push({
             x: Date.UTC(yearDate, monthDate, dayDate),//mes4countries[i][j]
-            x2:Date.UTC(today.getFullYear(), today.getMonth(), today.getDay()),
+            x2:todayUTC,
             showInLegend: true,
             color:colors[i],
             //x:mes4countries[i][j],

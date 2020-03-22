@@ -16,16 +16,14 @@ $(document).ready(function(){
     socket.on('update', function(data) {
         console.log("Connected");
         console.log("Received an update from the server:", data['categories']);
-        //var arr_from_json = JSON.parse(data);
+
         createCharts(data['categories'], data['countries'], data['mes4countries'] );
-        //$.each(data["params"]["categories"], function(key, value) {
 
-       // });
-        //$.each(data["params"]["data"], function(key, value) {
-
-        //});
-        //socket.emit('update');
     });
+    socket.on('fillFilters', function(data) {
+        PopulateFilters(data)
+    });
+
     $( "#login" ).submit(function( event ) {
       alert( "Handler for .submit() called." );
 

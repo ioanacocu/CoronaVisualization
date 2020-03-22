@@ -84,7 +84,16 @@ class AppFlask:
             data, measures = DataAnalyzer.getMeasures(p)
             countries=[c.name for c in data if (c.continent=='Europe' and len(c.measures)>1)]
             activeCountries=[c for c in data if (c.continent=='Europe' and len(c.measures)>1)]
+            allContinents = [c.continent for c in data]
+            continents=[]
+            for continent in allContinents:
+                if not continent in continents:
+                    continents.insert(len(continents),continent)
             allMes4c=[]
+            measures.sort();
+            countries.sort();
+            continents.sort();
+            activeCountries.sort(key=lambda x: x.name)
             for country in activeCountries:
                 print(len(country.measures))
                 mes4c=[]
@@ -96,6 +105,8 @@ class AppFlask:
                 allMes4c.insert(len(allMes4c), mes4c)
             new_data = {"countries": countries, "mes4countries":allMes4c, "categories": measures}
 
+            filter_data={"measures":measures, "countries":countries, "continents":continents};
+            self.socketio.emit('fillFilters', filter_data, namespace="/Index")
             self.socketio.emit('update', new_data, namespace="/Index")
 
         # Route for handling the login page logic
