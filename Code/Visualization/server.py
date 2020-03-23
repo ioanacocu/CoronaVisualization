@@ -26,11 +26,15 @@ class AppFlask:
     def __init__(self):
         self.app, self.socketio = create_app()
         print("Creating socketio app in server.py")
-        self.__fileLocation = 'Data\policies.csv'
-        p = Path(self.__fileLocation).resolve()
+        self.__fileLocationPolicies = 'Data\policies.csv'
+        self.__fileLocationTimeseries = 'Data\\time_series.csv'
+        p = Path(self.__fileLocationPolicies).resolve()
         data, measures = DataAnalyzer.getMeasures(p)
+        p = Path(self.__fileLocationTimeseries).resolve()
+        timeSeries=DataAnalyzer.getTimeSeries(p)
         self.__data = data
         self.__categories = measures
+        self.__timeSeries=timeSeries
         data = []
         measures = []
         @self.app.route('/init', methods=['POST'])
@@ -45,7 +49,7 @@ class AppFlask:
 
             """
 
-            p = Path(self.__fileLocation).resolve()
+            p = Path(self.__fileLocationPolicies).resolve()
             data, measures = DataAnalyzer.getMeasures(p)
             self.__data = data
             self.__categories = measures
@@ -61,7 +65,7 @@ class AppFlask:
 
             # Fetch data from message
             data = json.loads(request.data)
-            p = Path(self.__fileLocation).resolve()
+            p = Path(self.__fileLocationPolicies).resolve()
             data, measures = DataAnalyzer.getMeasures(p)
             self.__data = data
             self.__categories = measures
@@ -87,7 +91,7 @@ class AppFlask:
         @self.socketio.on('connected', namespace='/Index')
         def connected():
             pageLoaded = True;
-            p = Path(self.__fileLocation).resolve()
+            p = Path(self.__fileLocationPolicies).resolve()
             data, measures = DataAnalyzer.getMeasures(p)
             countries=[c.name for c in data if len(c.measures)>1]
             activeCountries=[c for c in data if len(c.measures)>1]
@@ -110,7 +114,9 @@ class AppFlask:
                     else:
                         mes4c.insert(len(mes4c),[('','')])
                 allMes4c.insert(len(allMes4c), mes4c)
-            new_data = {"countries": countries, "mes4countries":allMes4c, "categories": measures}
+            countriesWithDtatasets = [c for c in countries if c in self.__timeSeries.keys()]
+            filteredSeries = {new_key: self.__timeSeries[new_key] for new_key in countriesWithDtatasets}
+            new_data = {"countries": countries, "mes4countries":allMes4c, "categories": measures, "series":filteredSeries}
 
             filter_data={"measures":measures, "countries":countries, "continents":continents};
             self.socketio.emit('fillFilters', filter_data, namespace="/Index")
@@ -143,7 +149,9 @@ class AppFlask:
                     else:
                         mes4c.insert(len(mes4c), [('', '')])
                 allMes4c.insert(len(allMes4c), mes4c)
-            new_data = {"countries": countries, "mes4countries": allMes4c, "categories": measures}
+            countriesWithDtatasets=[c for c in countries if c in self.__timeSeries.keys()]
+            filteredSeries = {new_key: self.__timeSeries[new_key] for new_key in countriesWithDtatasets}
+            new_data = {"countries": countries, "mes4countries": allMes4c, "categories": measures, "series":filteredSeries}
 
             #filter_data = {"measures": measures, "countries": countries, "continents": continents};
             #self.socketio.emit('fillFilters', filter_data, namespace="/Index")

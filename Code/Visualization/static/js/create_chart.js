@@ -2,8 +2,8 @@ var colors = Highcharts.getOptions().colors;
 months=['January', 'February', 'March', 'April','May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 year=2020
 
-function createCharts(categories, series, mes4countries){
-s = [];
+function createCharts(categories, series, mes4countries, timeSeries){
+    s = [];
     len = series.length;
     i = 0;
     cats=categories.length;
@@ -13,6 +13,7 @@ s = [];
     cMonth=today.getMonth()
     cYear=today.getFullYear()
     todayUTC=Date.UTC(cYear,cMonth,cDay)
+    sTime=[]
 for(i;i<len;i++){
     sData=[]
     j=0;
@@ -56,6 +57,29 @@ for(i;i<len;i++){
         data:sData
     });
 }
+i=0
+for(i;i<len;i++){
+    if(timeSeries[series[i]]!='undefined'){
+        sData=[]
+        for (var year in timeSeries[series[i]]){
+            for (var month in timeSeries[series[i]][year]){
+                for (var day in timeSeries[series[i]][year][month])
+                {
+                sData.push({
+                    x: Date.UTC(year, month, day),//mes4countries[i][j]
+                    y:[series[i]][year][month][day][0]})
+                }}
+
+        }
+        sTime.push({
+        name: series[i],
+        color:color[i],
+        data:sData
+    });
+        }
+        }
+}
+
 
 Highcharts.chart('container2', {
     chart: {
@@ -102,4 +126,43 @@ Highcharts.chart('container2', {
         }]
 
 }}
-);}
+);
+
+Highcharts.chart('container3', {
+    chart: {
+        type: 'line',
+        styledMode: true
+    },
+    title: {
+        text: 'Measures taken by countries against COVID 19'
+    },
+    accessibility: {
+
+    },
+    xAxis: {
+        type: 'datetime'
+    },
+    yAxis: {
+        title: {
+            text: ''
+        },
+
+
+    },
+    series:sData,
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 550
+            },
+            chartOptions: {
+                legend: {
+                    itemWidth: 150
+                }
+
+                }
+        }]
+
+}}
+);
+}

@@ -22,7 +22,7 @@ function PopulateFilters(data, s) {
          checkbox.type = "checkbox";
          checkbox.name = measures[i]
          checkbox.value = measures[i];
-         checkbox.id = measures[i].replace(" ", "_");
+         checkbox.id = measures[i].replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '_');
          var label = document.createElement('label');
          label.htmlFor = measures[i];
          label.appendChild(document.createTextNode(measures[i]));
@@ -46,7 +46,7 @@ function PopulateFilters(data, s) {
          checkbox.type = "checkbox";
             checkbox.name = countries[i]
             checkbox.value = countries[i];
-            checkbox.id = countries[i].replace(" ", "_");
+            checkbox.id = countries[i].replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '_');
             var label = document.createElement('label');
             label.htmlFor = countries[i];
             label.appendChild(document.createTextNode(countries[i]));
@@ -69,7 +69,7 @@ function PopulateFilters(data, s) {
          checkbox.type = "checkbox";
          checkbox.name = continents[i]
          checkbox.value = continents[i];
-         checkbox.id = continents[i].replace(" ", "_");
+         checkbox.id = continents[i].replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '_')
          var label = document.createElement('label');
          label.htmlFor = continents[i];
          label.appendChild(document.createTextNode(continents[i]));

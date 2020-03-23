@@ -17,7 +17,7 @@ $(document).ready(function(){
         console.log("Connected");
         console.log("Received an update from the server:", data['categories']);
 
-        createCharts(data['categories'], data['countries'], data['mes4countries'] );
+        createCharts(data['categories'], data['countries'], data['mes4countries'], data['series'] );
 
     });
     socket.on('fillFilters', function(data) {
@@ -25,7 +25,7 @@ $(document).ready(function(){
     });
 
     socket.on('updateTable', function(data) {
-        createCharts(data['categories'], data['countries'], data['mes4countries'] );
+        createCharts(data['categories'], data['countries'], data['mes4countries'], data['series'] );
     });
 
     $( "#login" ).submit(function( event ) {
