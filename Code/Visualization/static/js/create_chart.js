@@ -1,6 +1,7 @@
 var colors = Highcharts.getOptions().colors;
 months=['January', 'February', 'March', 'April','May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-year=2020
+Cyear=2020
+Pyear=2019
 
 function createCharts(categories, series, mes4countries, timeSeries){
     s = [];
@@ -15,15 +16,15 @@ function createCharts(categories, series, mes4countries, timeSeries){
     todayUTC=Date.UTC(cYear,cMonth,cDay)
     sTime=[]
 for(i;i<len;i++){
-    sData=[]
+    sDataM=[]
     j=0;
     for (j;j<cats;j++){
         if(mes4countries[i][j][0].length>2){
         txtDate=mes4countries[i][j][0];
         yearDate=0;
         monthDate=-1;
-        if(!txtDate.includes(year)) {
-            yearDate=year;
+        if(!txtDate.includes(Cyear)&&!txtDate.includes(Pyear)) {
+            yearDate=Cyear;
         }
         m=0;
         for (m;m<12;m++){
@@ -42,7 +43,7 @@ for(i;i<len;i++){
              monthDate=date.getMonth();
               dayDate=date.getDay();}
         if(yearDate>2019){
-        sData.push({
+        sDataM.push({
             x: Date.UTC(yearDate, monthDate, dayDate),//mes4countries[i][j]
             x2:todayUTC,
             showInLegend: true,
@@ -54,7 +55,7 @@ for(i;i<len;i++){
         }
     s.push({
         name: series[i],
-        data:sData
+        data:sDataM
     });
 }
 i=0
@@ -65,20 +66,21 @@ for(i;i<len;i++){
             for (var month in timeSeries[series[i]][year]){
                 for (var day in timeSeries[series[i]][year][month])
                 {
-                sData.push({
-                    x: Date.UTC(year, month, day),//mes4countries[i][j]
-                    y:[series[i]][year][month][day][0]})
+                sData.push([
+                    Date.UTC(year, month-1, day),//mes4countries[i][j]
+                    Number(timeSeries[series[i]][year][month][day][0])])
                 }}
 
         }
+        if(sData.length>0){
         sTime.push({
         name: series[i],
-        color:color[i],
+        color:colors[i],
         data:sData
-    });
+    })};
         }
         }
-}
+
 
 
 Highcharts.chart('container2', {
@@ -134,7 +136,7 @@ Highcharts.chart('container3', {
         styledMode: true
     },
     title: {
-        text: 'Measures taken by countries against COVID 19'
+        text: 'Evolution of the number of cases/country'
     },
     accessibility: {
 
@@ -149,7 +151,7 @@ Highcharts.chart('container3', {
 
 
     },
-    series:sData,
+    series:sTime,
     responsive: {
         rules: [{
             condition: {

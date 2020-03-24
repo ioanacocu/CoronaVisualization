@@ -40,7 +40,7 @@ class DataAnalyzer:
                     if line_count == 7:
                         element_no = 0;
                         for element in row:
-                            if not (element.lower() == 'date' or element_no==0 or len(element)<2):
+                            if not (element.lower() == 'date' or element_no==0 or len(element)<4 or element=='Country Code'):
                                 measures.insert(len(measures),(element, element_no))
                             element_no += 1
                         line_count += 1
