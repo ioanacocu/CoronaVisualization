@@ -59,26 +59,32 @@ for(i;i<len;i++){
     });
 }
 i=0
+uniquets=[]
 for(i;i<len;i++){
-    if(timeSeries[series[i]]!='undefined'){
+    if(timeSeries[series[i][1]]!='undefined' && !uniquets.includes(series[i][1])){
         sData=[]
-        for (var year in timeSeries[series[i]]){
-            for (var month in timeSeries[series[i]][year]){
-                for (var day in timeSeries[series[i]][year][month])
+        uniquets.push(series[i][1]);
+        try{
+        c=Object.keys(timeSeries[series[i][1]])[0]
+        if(timeSeries[series[i][1]][c]!='undefined'){
+        for (var year in timeSeries[series[i][1]][c]){
+
+            for (var month in timeSeries[series[i][1]][c][year]){
+                for (var day in timeSeries[series[i][1]][c][year][month])
                 {
                 sData.push([
                     Date.UTC(year, month-1, day),//mes4countries[i][j]
-                    Number(timeSeries[series[i]][year][month][day][0])])
+                    Number(timeSeries[series[i][1]][c][year][month][day][0])])
                 }}
 
-        }
+        }}
         if(sData.length>0){
         sTime.push({
-        name: series[i],
+        name: c,
         color:colors[i],
         data:sData
-    })};
-        }
+    })};}
+        catch{}}
         }
 
 

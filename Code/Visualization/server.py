@@ -49,12 +49,7 @@ class AppFlask:
 
             """
 
-            p = Path(self.__fileLocationPolicies).resolve()
-            data, measures = DataAnalyzer.getMeasures(p)
-            self.__data = data
-            self.__categories = measures
-
-            new_data ={'params': {'data': data, 'categories': measures}}
+            new_data ={'params': {'data': self.__data, 'categories': self.__categories}}
 
             self.socketio.emit('init', new_data, namespace="/index")
 
@@ -65,12 +60,8 @@ class AppFlask:
 
             # Fetch data from message
             data = json.loads(request.data)
-            p = Path(self.__fileLocationPolicies).resolve()
-            data, measures = DataAnalyzer.getMeasures(p)
-            self.__data = data
-            self.__categories = measures
 
-            new_data = {'params': {'data': data, 'categories': measures}}
+            new_data = {'params': {'data': self.__data, 'categories': self.__categories}}
             self.socketio.emit('update', new_data, namespace="/index")
 
             global user_input
@@ -91,9 +82,8 @@ class AppFlask:
         @self.socketio.on('connected', namespace='/Index')
         def connected():
             pageLoaded = True;
-            p = Path(self.__fileLocationPolicies).resolve()
-            data, measures = DataAnalyzer.getMeasures(p)
-            countries=[c.name for c in data if len(c.measures)>1]
+            data, measures = self.__data, self.__categories
+            countries=[(c.name, c.geoID) for c in data if len(c.measures)>1]
             activeCountries=[c for c in data if len(c.measures)>1]
             allContinents = [c.continent for c in data]
             continents=[]
@@ -102,7 +92,7 @@ class AppFlask:
                     continents.insert(len(continents),continent)
             allMes4c=[]
             measures.sort();
-            countries.sort();
+            countries.sort(key=lambda x: x[0]);
             continents.sort();
             activeCountries.sort(key=lambda x: x.name)
             for country in activeCountries:
@@ -114,7 +104,7 @@ class AppFlask:
                     else:
                         mes4c.insert(len(mes4c),[('','')])
                 allMes4c.insert(len(allMes4c), mes4c)
-            countriesWithDtatasets = [c for c in countries if c in self.__timeSeries.keys()]
+            countriesWithDtatasets = [c[1] for c in countries if c[1] in self.__timeSeries.keys()]
             filteredSeries = {new_key: self.__timeSeries[new_key] for new_key in countriesWithDtatasets}
             new_data = {"countries": countries, "mes4countries":allMes4c, "categories": measures, "series":filteredSeries}
 
@@ -130,13 +120,13 @@ class AppFlask:
             selectedCountries = data[3]
             selectedMeasures = data[5]
             measures=[m for m in self.__categories if m in selectedMeasures]
-            countries = [c.name for c in self.__data if (c.continent in selectedContinents and c.name in selectedCountries and len(c.measures) > 1)]
-            activeCountries = [c for c in self.__data if (c.continent in selectedContinents and c.name in selectedCountries and len(c.measures) > 1)]
+            countries = [[c.name, c.geoID] for c in self.__data if (c.continent in selectedContinents and c.geoID in selectedCountries and len(c.measures) > 1)]
+            activeCountries = [c for c in self.__data if (c.continent in selectedContinents and c.geoID in selectedCountries and len(c.measures) > 1)]
 
 
             allMes4c = []
             measures.sort();
-            countries.sort();
+            countries.sort(key=lambda x: x[0]);
             print("menu changed",countries)
             activeCountries.sort(key=lambda x: x.name)
             for country in activeCountries:
@@ -149,8 +139,10 @@ class AppFlask:
                     else:
                         mes4c.insert(len(mes4c), [('', '')])
                 allMes4c.insert(len(allMes4c), mes4c)
-            countriesWithDtatasets=[c for c in countries if c in self.__timeSeries.keys()]
-            filteredSeries = {new_key: self.__timeSeries[new_key] for new_key in countriesWithDtatasets}
+            countriesWithDtatasets=[c[1] for c in countries if c[1] in self.__timeSeries.keys()]
+            #print (countries)
+            #print(countriesWithDtatasets)
+            filteredSeries ={new_key: self.__timeSeries[new_key] for new_key in countriesWithDtatasets}
             new_data = {"countries": countries, "mes4countries": allMes4c, "categories": measures, "series":filteredSeries}
 
             #filter_data = {"measures": measures, "countries": countries, "continents": continents};

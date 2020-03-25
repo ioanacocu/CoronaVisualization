@@ -44,12 +44,12 @@ function PopulateFilters(data, s) {
     for (i;i<cLength;i++){
          var checkbox = document.createElement('input')
          checkbox.type = "checkbox";
-            checkbox.name = countries[i]
-            checkbox.value = countries[i];
-            checkbox.id = countries[i].replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '_');
+            checkbox.name = countries[i][1]
+            checkbox.value = countries[i][1];
+            checkbox.id = countries[i][1];
             var label = document.createElement('label');
-            label.htmlFor = countries[i];
-            label.appendChild(document.createTextNode(countries[i]));
+            label.htmlFor = countries[i][1];
+            label.appendChild(document.createTextNode(countries[i][0]));
             checkbox.addEventListener( 'click', function() {modifyCountries(this.id,socket)});
             countriesDiv.appendChild(checkbox);
             countriesDiv.appendChild(label);
