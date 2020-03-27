@@ -24,13 +24,15 @@ class Measure:
                             sort_keys=True)
 
 class Country:
-    def __init__(self, name, firstCaseDate, criticalNumber, continent, measures, geoID):
+    def __init__(self, name, firstCaseDate, continent, measures, geoID):
         self.name = name
         self.firstCaseDate = firstCaseDate
-        self.criticalNumber = criticalNumber
         self.measures = measures
         self.continent = continent
-        self.geoID=coco.convert(names=geoID , to='ISO2')
+        if geoID=='GBR':
+            self.geoID='UK'
+        else:
+            self.geoID=coco.convert(names=geoID , to='ISO2')
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,

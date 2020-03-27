@@ -8,6 +8,27 @@ function PopulateFilters(data, s) {
     contLength=data['continents'].length
     countries=data['countries']
     cLength=data['countries'].length
+
+    i=0;
+    showableCountries=[]
+    uniqueIndexes=[]
+    for (i;i<cLength;i++){
+        if(uniqueIndexes.includes(countries[i][1])) {
+            j=0
+            for (j;j<showableCountries.length;j++){
+                if (showableCountries[j][1]==countries[i][1]){showableCountries[j][0]=countries[i][1]}
+            }
+            }
+            else {
+            showableCountries.push(countries[i])
+            uniqueIndexes.push(countries[i][1])
+            }
+
+        }
+
+    countries=showableCountries
+    cLength=countries.length
+
     measures=data['measures']
     mLength=data['measures'].length
     i=0;

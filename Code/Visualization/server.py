@@ -120,8 +120,8 @@ class AppFlask:
             selectedCountries = data[3]
             selectedMeasures = data[5]
             measures=[m for m in self.__categories if m in selectedMeasures]
-            countries = [[c.name, c.geoID] for c in self.__data if (c.continent in selectedContinents and c.geoID in selectedCountries and len(c.measures) > 1)]
-            activeCountries = [c for c in self.__data if (c.continent in selectedContinents and c.geoID in selectedCountries and len(c.measures) > 1)]
+            countries = [[c.name, c.geoID] for c in self.__data if (c.continent in selectedContinents or c.geoID in selectedCountries and len(c.measures) > 1)]
+            activeCountries = [c for c in self.__data if (c.continent in selectedContinents or c.geoID in selectedCountries and len(c.measures) > 1)]
 
 
             allMes4c = []

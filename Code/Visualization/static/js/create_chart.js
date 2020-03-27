@@ -1,5 +1,5 @@
 var colors = Highcharts.getOptions().colors;
-months=['January', 'February', 'March', 'April','May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+months=['jan', 'feb', 'mrt', 'apr','may', 'jun', 'jul', 'aug', 'sept', 'oct', 'nov', 'dec']
 Cyear=2020
 Pyear=2019
 
@@ -38,10 +38,11 @@ for(i;i<len;i++){
          if(yearDate!=0 && monthDate!=-1){
             dayDate=numbers[0];
             date=new Date(yearDate,monthDate,dayDate)}
-         else {date=new Date(txtDate)
-             yearDate=date.getFullYear();
-             monthDate=date.getMonth();
-              dayDate=date.getDay();}
+         else {dateSplit=txtDate.split("-")
+
+              yearDate=dateSplit[2];
+              monthDate=dateSplit[1]-1;
+              dayDate=dateSplit[0];}
         if(yearDate>2019){
         sDataM.push({
             x: Date.UTC(yearDate, monthDate, dayDate),//mes4countries[i][j]

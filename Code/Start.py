@@ -17,17 +17,17 @@ import requests
 import pandas as pd
 csv_content = requests.get(url)
 
-html = requests.get(url).content
-df_list = pd.read_html(html)
-df = df_list[-1]
+#html = requests.get(url).content
+#df_list = pd.read_html(html)
+#df = df_list[-1]
 
-df.to_csv(output)
+#df.to_csv(output)
 
 url2='https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-23.xlsx'
 read_file = pd.read_excel (r'https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-23.xlsx')
 read_file.to_csv (r'Data/time_series.csv', index = None, header=True)
 
-time.sleep(20)
+time.sleep(10)
 started_visualization=server.run_visualisation_server()
 __visualizer = Visualizer.Visualizer(server_running = True)
 
