@@ -3,7 +3,7 @@ import csv
 from  Visualization import DataStructure
 from  Visualization.DataStructure import *
 
-from Code.Visualization.DataStructure import Measure, Country
+from Visualization.DataStructure import Measure, Country
 
 
 class DataAnalyzer:
