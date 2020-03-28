@@ -15,6 +15,8 @@ function createCharts(categories, series, mes4countries, timeSeries){
     cYear=today.getFullYear()
     todayUTC=Date.UTC(cYear,cMonth,cDay)
     sTime=[]
+    plotLines=[]
+    plotBands=[]
 for(i;i<len;i++){
     sDataM=[]
     j=0;
@@ -39,7 +41,6 @@ for(i;i<len;i++){
             dayDate=numbers[0];
             date=new Date(yearDate,monthDate,dayDate)}
          else {dateSplit=txtDate.split("-")
-
               yearDate=dateSplit[2];
               monthDate=dateSplit[1]-1;
               dayDate=dateSplit[0];}
@@ -51,7 +52,19 @@ for(i;i<len;i++){
             color:colors[i],
             //x:mes4countries[i][j],
             y:j})
-        }}
+        }
+        plotLines.push({
+        color:colors[i],
+        width: 2,
+        value: Date.UTC(yearDate, monthDate, dayDate),//mes4countries[i][j]
+        label: {
+                text: categories[j]+", "+series[i], // Content of the label.
+                align: 'left', // Positioning of the label.
+                color:colors[i]
+
+  }
+    })}
+
         catch{}}
         }
     s.push({
@@ -149,12 +162,15 @@ Highcharts.chart('container3', {
 
     },
     xAxis: {
-        type: 'datetime'
+        type: 'datetime',
+        plotLines:plotLines
     },
     yAxis: {
         title: {
             text: ''
+
         },
+        plotLines:plotLines
 
 
     },
