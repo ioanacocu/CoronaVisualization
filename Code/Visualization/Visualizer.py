@@ -14,7 +14,7 @@ class Visualizer:
     """
 
     def __init__(self, server_running=False):
-        self.__fileLocation = Path("../Visualization/Data/policies.csv")
+        self.__fileLocation = os.path.join("Visualization", "Data", "policies.csv")
         p = Path(self.__fileLocation).resolve()
         data, measures = DataAnalyzer.getMeasures(p)
 
