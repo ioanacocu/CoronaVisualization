@@ -1,8 +1,6 @@
 
 import pymongo
-import datetime
 import time
-import os.path
 import warnings
 import threading
 from collections import OrderedDict
