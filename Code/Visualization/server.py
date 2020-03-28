@@ -26,8 +26,8 @@ class AppFlask:
     def __init__(self):
         self.app, self.socketio = create_app()
         print("Creating socketio app in server.py")
-        self.__fileLocationPolicies = 'Data\policies.csv'
-        self.__fileLocationTimeseries = 'Data\\time_series.csv'
+        self.__fileLocationPolicies = os.path.join('Data', 'policies.csv')
+        self.__fileLocationTimeseries = os.path.join('Data', 'time_series.csv')
         p = Path(self.__fileLocationPolicies).resolve()
         data, measures = DataAnalyzer.getMeasures(p)
         p = Path(self.__fileLocationTimeseries).resolve()
