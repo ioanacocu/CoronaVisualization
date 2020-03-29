@@ -1,6 +1,7 @@
 selectedContinents=[]
 selectedCountries=[]
 selectedMeasures=[]
+
 socket=''
 function PopulateFilters(data, s) {
     socket=s
@@ -38,6 +39,7 @@ function PopulateFilters(data, s) {
     }
     linebreak = document.createElement("br");
     measuresDiv.appendChild(linebreak);
+    selectedMeasuresLength=selectedMeasures.length
     for (i;i<mLength;i++){
          var checkbox = document.createElement('input')
          checkbox.type = "checkbox";
@@ -49,6 +51,9 @@ function PopulateFilters(data, s) {
          label.appendChild(document.createTextNode(measures[i]));
          checkbox.addEventListener( 'click', function() {modifyMeasures(this.id, socket)});
          measuresDiv.appendChild(checkbox);
+         if (selectedMeasuresLength==0)
+            {selectedMeasures.push(measures[i]);
+            checkbox.checked=true}
          measuresDiv.appendChild(label);
          linebreak = document.createElement("br");
          measuresDiv.appendChild(linebreak);
@@ -85,6 +90,7 @@ function PopulateFilters(data, s) {
     linebreak = document.createElement("br");
     continentsDiv.appendChild(linebreak);
     i=0;
+    selectedContinentsLength=selectedContinents.length
     for (i;i<contLength;i++){
          var checkbox = document.createElement('input')
          checkbox.type = "checkbox";
@@ -96,10 +102,16 @@ function PopulateFilters(data, s) {
          label.appendChild(document.createTextNode(continents[i]));
          checkbox.addEventListener( 'click', function() {modifyContinents(this.id, socket)});
          continentsDiv.appendChild(checkbox);
+         if (selectedContinentsLength==0)
+            {
+            selectedContinents.push(continents[i])
+            checkbox.checked=true}
          continentsDiv.appendChild(label);
          linebreak = document.createElement("br");
          continentsDiv.appendChild(linebreak);
 }
+socket.emit('update', ["continents", selectedContinents, "countries", selectedCountries, "measures", selectedMeasures]);
+
         }
 
 function modifyContinents(id){

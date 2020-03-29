@@ -1,5 +1,4 @@
 
-import pymongo
 import datetime
 import time
 import os.path
@@ -23,8 +22,8 @@ csv_content = requests.get(url)
 
 #df.to_csv(output)
 
-url2='https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-23.xlsx'
-read_file = pd.read_excel (r'https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-23.xlsx')
+url2='https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-28.xlsx'
+read_file = pd.read_excel (r'https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide-2020-03-28.xlsx')
 read_file.to_csv (r'Data/time_series.csv', index = None, header=True)
 
 time.sleep(10)

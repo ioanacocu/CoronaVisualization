@@ -4,7 +4,7 @@ import gevent
 from gevent import monkey, sleep
 #monkey.patch_all()
 from flask import Flask, request, render_template, jsonify, redirect, url_for
-from flask_socketio import SocketIO, join_room
+from flask_socketio import SocketIO
 import threading
 import json
 from Visualization import DataAnalyzer
