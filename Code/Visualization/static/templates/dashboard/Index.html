@@ -96,6 +96,10 @@ font-weight: bold;
 <script src="static/js/Highcharts-8.0.4/code/modules/export-data.js"></script>
 <script src="static/js/Highcharts-8.0.4/code/modules/accessibility.js"></script>
 <script src="static/js/Highcharts-8.0.4/code/themes/high-contrast-light.js"></script>
+<script src="static/js/Highmaps-8.0.4/code/modules/data.js"></script>
+<script src="static/js/Highmaps-8.0.4/code/modules/map.js"></script>
+<script src="static/js/Highmaps-8.0.4/code/mapdata/custom/world.js"></script>
+
 <script src="static/js/create_chart.js"></script>
 
 
@@ -142,6 +146,19 @@ font-weight: bold;
        Visualization of number of cases per country
     </p>
 </figure>
+	  <figure class="highcharts-figure">
+    <div id="container1"></div>
+    <p class="highcharts-description">
+       Visualization of number of cases per country
+    </p>
+		  <div id="info">
+        <span class="f32"><span id="flag"></span></span>
+        <h2></h2>
+        <div class="subheader">Click countries to view history</div>
+        <div id="country-chart"></div>
+    </div>
+</figure>
+
   </div>
 </div>
 

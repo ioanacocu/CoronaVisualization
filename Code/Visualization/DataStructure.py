@@ -9,7 +9,7 @@ tDeaths='deaths'
 tDay='day'
 tMonth='month'
 tYear='year'
-tCountryCode='geoId'
+tCountryCode='countryterritoryCode'
 import country_converter as coco
 
 import json
@@ -29,10 +29,7 @@ class Country:
         self.firstCaseDate = firstCaseDate
         self.measures = measures
         self.continent = continent
-        if geoID=='GBR':
-            self.geoID='UK'
-        else:
-            self.geoID=coco.convert(names=geoID , to='ISO2')
+        self.geoID=geoID
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
