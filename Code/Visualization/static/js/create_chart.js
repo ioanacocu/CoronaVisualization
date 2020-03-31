@@ -262,7 +262,7 @@ function drawMap(){
 
                 }
                 document.querySelector('#info .subheader')
-                    .innerHTML = '<h4>Historical population</h4><small><em>Shift + Click on map to compare countries</em></small>';
+                    .innerHTML = '<h4>Case number evolution</h4><small><em>Shift + Click on map to compare countries</em></small>';
 
                 if (!countryChart) {
                     countryChart = Highcharts.chart('country-chart', {
@@ -335,11 +335,11 @@ function drawMap(){
                 styledMode: true
                  },
             title: {
-                text: 'Population history by country'
+                text: 'New COVID-19 cases per day'
             },
 
             subtitle: {
-                text: 'Source: <a href="http://data.worldbank.org/indicator/SP.POP.TOTL/countries/1W?display=default">The World Bank</a>'
+                text: 'Source: ECDC'
             },
 
             mapNavigation: {
@@ -362,7 +362,7 @@ function drawMap(){
                 data: data,
                 mapData: mapData,
                 joinBy: ['iso-a3', 'code3'],
-                name: 'Current population',
+                name: 'New cases today',
                 allowPointSelect: true,
                 cursor: 'pointer',
                 states: {
